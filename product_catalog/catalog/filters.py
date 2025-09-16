@@ -1,6 +1,7 @@
 import django_filters
+from django.db.models import Q
 from .models import Product
-from . import models
+
 
 class ProductFilter(django_filters.FilterSet):
     min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
@@ -14,4 +15,6 @@ class ProductFilter(django_filters.FilterSet):
 
     def filter_search(self, queryset, name, value):
         # Simple icontains search across name and description:
-        return queryset.filter(models.Q(name__icontains=value) | models.Q(description__icontains=value))
+        qs = queryset.filter(Q(name__icontains=value) | Q(description__icontains=value))
+        print("DEBUG SQL:", qs.query)
+        return qs
