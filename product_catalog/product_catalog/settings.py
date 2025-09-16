@@ -32,7 +32,7 @@ DEBUG = os.getenv("DJANGO_DEBUG", "true").lower() == "true"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["*", ".railway.app"]
 
 CORS_ALLOW_ALL_ORIGINS = True
 
