@@ -1,4 +1,6 @@
-web: python product_catalog/manage.py runserver 0.0.0.0:$PORT
+web: gunicorn product_catalog.wsgi:application --bind 0.0.0.0:$PORT
+
+
 
 
 
