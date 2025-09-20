@@ -34,7 +34,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*", ".railway.app"]
 
-CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",   # your Next.js local dev
+    # "https://your-frontend-domain.com",  # add when deployed
+]
+
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
@@ -51,6 +58,7 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
 ]
 
 MIDDLEWARE = [
@@ -152,6 +160,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+AUTH_USER_MODELS = 'userauths.CustomUser'
 
 SWAGGER_SETTINGS = {
     "SECURITY_DEFINITIONS": {
@@ -163,6 +172,23 @@ SWAGGER_SETTINGS = {
         }
     },
 }
+AUTHENTICATION_BACKENDS = [
+    "userauths.backends.EmailBackend",   # custom email backend
+    "django.contrib.auth.backends.ModelBackend",  # keep default
+]
+
+# REST_FRAMEWORK = {
+#     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+#     'PAGE_SIZE': 12,
+#     'DEFAULT_FILTER_BACKENDS': [
+#         'django_filters.rest_framework.DjangoFilterBackend',
+#         'rest_framework.filters.OrderingFilter',
+#         'rest_framework.filters.SearchFilter',
+#     ],
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'userauths.authentication.CookieJWTAuthentication',
+#     ),
+# }
 
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
@@ -173,9 +199,12 @@ REST_FRAMEWORK = {
         'rest_framework.filters.SearchFilter',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
+        'userauths.authentication.CookieJWTAuthentication',
+        'rest_framework.authentication.SessionAuthentication',  # 👈 allow swagger
+        'rest_framework.authentication.BasicAuthentication',    # 👈 allow swagger
     ),
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),

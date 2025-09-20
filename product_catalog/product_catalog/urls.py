@@ -18,9 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.urls import path, include
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from rest_framework.permissions import AllowAny
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
+from userauths.views import CookieTokenRefreshView
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -29,14 +31,18 @@ schema_view = get_schema_view(
       description="E-commerce product catalog API",
    ),
    public=True,
-   permission_classes=(permissions.AllowAny,),
+   permission_classes=(AllowAny,),
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('catalog.urls')),
+    path('api/users/', include('userauths.urls')),
     path('api/auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    # custom token refresh endpoint
+    path('refresh/', CookieTokenRefreshView.as_view(), name='token-refresh'),
     # docs routes here (swagger)
     path('swagger(<format>\.json|\.yaml)', schema_view.without_ui(cache_timeout=0)),
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
