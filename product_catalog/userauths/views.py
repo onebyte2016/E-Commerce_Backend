@@ -8,6 +8,9 @@ from rest_framework.response import Response
 from rest_framework import status 
 from rest_framework_simplejwt.views import TokenRefreshView
 from rest_framework_simplejwt.exceptions import InvalidToken
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
+
 # Create your views here.
 class CustomUserView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
@@ -21,6 +24,10 @@ class UserRegistrationView(CreateAPIView):
 
 
 class LoginView(APIView):
+    @swagger_auto_schema(
+    request_body=LoginUserSerializer,
+    responses={200: CustomUserSerializer}
+    )
     def post(self, request):
         serializer = LoginUserSerializer(data=request.data)
 
