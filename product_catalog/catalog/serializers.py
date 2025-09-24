@@ -28,7 +28,7 @@ class ProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id", "name", "slug", "description", "price", "stock", "available",
-            "created_at", "updated_at", "category", "category_id", "images"
+            "created_at", "updated_at", "category", 'brand', "category_id", "images"
         ]
         read_only_fields = ["id", "slug", "created_at", "updated_at"]
 
@@ -41,7 +41,7 @@ class ProductCreateSerializer(serializers.ModelSerializer):
         model = Product
         fields = [
             "id", "name", "slug", "description", "price", "stock",
-            "available", "category_id", "images"
+            "available", "category_id", 'brand', "images"
         ]
 
     def create(self, validated_data):
