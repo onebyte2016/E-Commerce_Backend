@@ -45,6 +45,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=270, unique=True)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
+    initial_price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     stock = models.PositiveIntegerField(default=0)
     available = models.BooleanField(default=True)
     # image = models.ImageField(upload_to='product_images/', blank=True, null=True)
