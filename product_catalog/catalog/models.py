@@ -72,7 +72,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="product_images/")
+    image = models.URLField(max_length=1000)  # increase max_length
 
     def __str__(self):
         return f"Image for {self.product.name}"

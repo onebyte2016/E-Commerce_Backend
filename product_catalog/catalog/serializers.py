@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Brand, Category, Product, ProductImage
+import cloudinary.uploader
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,6 +18,17 @@ class ProductImageSerializer(serializers.ModelSerializer):
         model = ProductImage
         fields = ["id", "image"]
 
+    def create(self, validated_data):
+        image_file = validated_data.get("image")
+
+        # Upload file to Cloudinary
+        upload_result = cloudinary.uploader.upload(image_file, folder="product_images")
+
+        # Save the Cloudinary URL into the model
+        validated_data["image"] = upload_result["secure_url"]
+        return super().create(validated_data)
+
+
 class ProductSerializer(serializers.ModelSerializer):
     category = CategorySerializer(read_only=True)
     brand = BrandSerializer(read_only=True)
@@ -33,21 +45,39 @@ class ProductSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ["id", "slug", "created_at", "updated_at"]
 
+
+
 class ProductCreateSerializer(serializers.ModelSerializer):
     images = serializers.ListField(
         child=serializers.ImageField(), write_only=True, required=False
+    )
+    category_id = serializers.PrimaryKeyRelatedField(
+        source="category", queryset=Category.objects.all(), write_only=True
+    )
+    brand = serializers.PrimaryKeyRelatedField(
+        queryset=Brand.objects.all(), write_only=True
     )
 
     class Meta:
         model = Product
         fields = [
-            "id", "name", "slug", "description",'initial_price', "price", "stock",
-            "available", "category_id", 'brand', "images"
+            "id", "name", "slug", "description", "initial_price", "price",
+            "stock", "available", "category_id", "brand", "images"
         ]
+        read_only_fields = ["id", "slug"]
 
     def create(self, validated_data):
         images = validated_data.pop("images", [])
         product = super().create(validated_data)
+
         for image in images:
-            ProductImage.objects.create(product=product, image=image)
+            # Upload to Cloudinary
+            result = cloudinary.uploader.upload(image, folder="product_images")
+
+            # Save secure URL in DB
+            ProductImage.objects.create(
+                product=product,
+                image=result["secure_url"]
+            )
+
         return product
