@@ -59,6 +59,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +95,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'product_catalog.wsgi.application'
 
+# Cloudinary Config
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'dzlpsd12b',
+    'API_KEY': '749879934386175',
+    'API_SECRET': 'gkETr_8MCaIvthuCoaFObA43jzg'
+}
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Media URL (Cloudinary will serve media)
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
