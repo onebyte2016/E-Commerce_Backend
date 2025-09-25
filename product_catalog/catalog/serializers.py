@@ -13,6 +13,7 @@ class BrandSerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'slug', 'description', 'created_at']
 
 
+
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
