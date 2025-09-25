@@ -103,6 +103,7 @@ CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dzlpsd12b',
     'API_KEY': '749879934386175',
     'API_SECRET': 'gkETr_8MCaIvthuCoaFObA43jzg',
+    'FOLDER': 'product_images',
 }
 
 # CLOUDINARY_STORAGE = {

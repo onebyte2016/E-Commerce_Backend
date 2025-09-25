@@ -1,6 +1,9 @@
+import cloudinary
+import cloudinary.uploader
 from rest_framework import serializers
 from .models import Brand, Category, Product, ProductImage
-import cloudinary.uploader
+
+
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -17,17 +20,23 @@ class BrandSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ["id", "image"]
+        fields = ["id", "cloudinary_url"]
 
-    def create(self, validated_data):
-        image_file = validated_data.get("image")
 
-        # Upload file to Cloudinary
-        upload_result = cloudinary.uploader.upload(image_file, folder="product_images")
+# class ProductImageSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = ProductImage
+#         fields = ["id", "image"]
 
-        # Save the Cloudinary URL into the model
-        validated_data["image"] = upload_result["secure_url"]
-        return super().create(validated_data)
+#     def create(self, validated_data):
+#         image_file = validated_data.get("image")
+
+#         # Upload file to Cloudinary
+#         upload_result = cloudinary.uploader.upload(image_file, folder="product_images")
+
+#         # Save the Cloudinary URL into the model
+#         validated_data["image"] = upload_result["secure_url"]
+#         return super().create(validated_data)
 
 
 class ProductSerializer(serializers.ModelSerializer):
