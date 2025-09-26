@@ -20,7 +20,7 @@ class BrandSerializer(serializers.ModelSerializer):
 class ProductImageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductImage
-        fields = ["id", "cloudinary_url"]
+        fields = ["id", "image"]
 
 
 # class ProductImageSerializer(serializers.ModelSerializer):
