@@ -94,9 +94,27 @@ class Product(models.Model):
 #         return f"Image for {self.product.name}"
 
 
+# class ProductImage(models.Model):
+#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
+#     image = models.ImageField(upload_to="",blank=True, null=True )  # Cloudinary handles storage and folder
+
+#     def __str__(self):
+#         return f"Image for {self.product.name}"
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to="",blank=True, null=True )  # Cloudinary handles storage and folder
+    image = models.ImageField(upload_to="", blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if self.image and not str(self.image).startswith("http"):
+            # Upload to Cloudinary
+            upload_result = cloudinary.uploader.upload(
+                self.image,
+                folder="product_images"
+            )
+            # Replace local file with Cloudinary URL
+            self.image = upload_result["secure_url"]
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Image for {self.product.name}"
