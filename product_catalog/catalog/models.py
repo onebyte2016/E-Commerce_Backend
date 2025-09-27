@@ -71,35 +71,7 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-# class ProductImage(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-#     image = models.ImageField(upload_to="products/", blank=True, null=True)  # If you’re saving original file
-#     cloudinary_url = models.TextField(max_length=1000, blank=True, null=True)
-
-#     def save(self, *args, **kwargs):
-#         if self.image and not self.cloudinary_url:
-#             # Upload to Cloudinary
-#             upload_result = cloudinary.uploader.upload(
-#                 self.image,
-#                 folder="product_images"
-#             )
-#             self.cloudinary_url = upload_result["secure_url"]
-
-#             # optionally clear the temp image if you don’t want to store it locally
-#             self.image.delete(save=False)
-
-#         super().save(*args, **kwargs)
-
-#     def __str__(self):
-#         return f"Image for {self.product.name}"
-
-
-# class ProductImage(models.Model):
-#     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-#     image = models.ImageField(upload_to="",blank=True, null=True )  # Cloudinary handles storage and folder
-
-#     def __str__(self):
-#         return f"Image for {self.product.name}"
+    
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="", blank=True, null=True)
