@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: ecommerce-backend
+    env: python
+    plan: free
+    buildCommand: |
+      pip install -r requirements.txt
+      python manage.py collectstatic --noinput
+    startCommand: |
+      gunicorn ecommerce_backend.wsgi:application --bind 0.0.0.0:8000 &
+      nginx -c /opt/render/project/src/nginx.conf
+    disk:
+      name: media
+      mountPath: /opt/render/project/src/media
+      sizeGB: 1

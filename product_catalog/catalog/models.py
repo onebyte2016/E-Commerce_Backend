@@ -74,7 +74,7 @@ class Product(models.Model):
     
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
-    image = models.ImageField(upload_to="", blank=True, null=True)
+    image = models.ImageField(upload_to="", max_length=255, blank=True, null=True)
 
     def save(self, *args, **kwargs):
         if self.image and not str(self.image).startswith("http"):
