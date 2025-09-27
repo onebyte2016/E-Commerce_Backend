@@ -6,6 +6,7 @@ from django.contrib.postgres.indexes import GinIndex
 from django.contrib.postgres.search import SearchVectorField
 from django.db import models
 
+#Model for Category
 class Category(models.Model):
     name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=160, unique=True)
@@ -23,6 +24,7 @@ class Category(models.Model):
     def __str__(self):
         return self.name
 
+#Model for brand
 class Brand(models.Model):
     name = models.CharField(max_length=150, unique=True)
     slug = models.SlugField(max_length=160, unique=True)
@@ -40,6 +42,7 @@ class Brand(models.Model):
     def __str__(self):
         return self.name
 
+# Model for Product
 class Product(models.Model):
     category = models.ForeignKey(Category, related_name='products', on_delete=models.PROTECT)
     brand = models.ForeignKey(Brand, related_name='products', on_delete=models.PROTECT, null=True, blank=True)
@@ -50,7 +53,6 @@ class Product(models.Model):
     initial_price = models.DecimalField(max_digits=12, decimal_places=2, validators=[MinValueValidator(0)])
     stock = models.PositiveIntegerField(default=0)
     available = models.BooleanField(default=True)
-    # image = models.ImageField(upload_to='product_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     search_vector = SearchVectorField(null=True, blank=True)
@@ -71,7 +73,8 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+#Model for product image
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="images")
     image = models.ImageField(upload_to="", max_length=255, blank=True, null=True)

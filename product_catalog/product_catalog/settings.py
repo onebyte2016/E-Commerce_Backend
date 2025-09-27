@@ -121,7 +121,7 @@ DATABASES = {
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'CGVVKyMAVAmxUXKzHPPHIOQxVKaXdmlT',
-        'HOST': 'shinkansen.proxy.rlwy.net',   # or the container/service name if using Docker
+        'HOST': 'shinkansen.proxy.rlwy.net',
         'PORT': '48542',
     }
 }

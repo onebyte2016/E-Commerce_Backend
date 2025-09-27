@@ -12,6 +12,7 @@ from rest_framework.parsers import MultiPartParser, FormParser
 
 
 
+# Product viewset
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.select_related('category').all()
     serializer_class = ProductSerializer
@@ -21,7 +22,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     filter_backends = [
         DjangoFilterBackend,   #  handles min_price, max_price, category, available
         filters.OrderingFilter,
-        filters.SearchFilter   # keep free-text search separate
+        filters.SearchFilter   # keeping free-text search separate
     ]
     filterset_class = ProductFilter
 
@@ -31,16 +32,13 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 
-    # Filtering
-    # filterset_fields = ['category', 'brand', 'available']  # filter by these fields
-
-
+#Product category viewset
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
 
-
+# #Product brand viewset
 class BrandViewSet(viewsets.ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
