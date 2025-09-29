@@ -38,8 +38,8 @@ DEBUG = True
 ALLOWED_HOSTS = ["*", ".railway.app"]
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",   # your Next.js local dev
-    # "https://your-frontend-domain.com",  # add when deployed
+    "http://localhost:3000",
+    "https://alx-project-nexus-six-sand.vercel.app",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
